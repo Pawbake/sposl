@@ -1,0 +1,131 @@
+1.javac TestJNI.java
+2.javah -jni  TestJNI
+3.gcc -fPIC -I/usr/lib/jvm/java-8-openjdk-amd64/include -I/usr/lib/jvm/java-8-openjdk-amd64/include/linux -o libcal.so -shared TestJNI.c
+4.java -Djava.library.path=. TestJNI
+DLL
+
+TestJNI.java
+
+
+import java.util.Scanner;
+import static java.lang.System.out;
+public class TestJNI {
+
+static {
+
+System.loadLibrary("cal"); 
+
+}
+
+private native int add(int n1, int n2);
+private native int sub(int n1, int n2);
+private native int mul(int n1, int n2);
+private native int div(int n1, int n2);
+public static void main(String[] args) {
+
+Scanner sc=new Scanner(System.in);
+out.println("Simple Caculator");
+int a;
+do{
+out.println("Enter Your choice");
+out.println("1.ADD \n 2.SUB \n 3.MUL 4.DIV");
+a=sc.nextInt();
+if(a==1)
+{ int b;
+  int c;
+  out.println("Enter first Number");
+  b=sc.nextInt();
+  out.println("Enter second  Number");
+  c=sc.nextInt();
+System.out.println("Addition is="+new TestJNI().add(b,c));
+}
+
+else if(a==2)
+{
+
+int b;
+  int c;
+  out.println("Enter first Number");
+  b=sc.nextInt();
+  out.println("Enter Second Number");
+  c=sc.nextInt();
+System.out.println("Subtraction is="+new TestJNI().sub(b,c));
+
+
+}
+else if(a==3)
+{
+
+int b;
+  int c;
+  out.println("Enter first Number");
+  b=sc.nextInt();
+  out.println("Enter Second Number");
+  c=sc.nextInt();
+System.out.println("Multiplication is="+new TestJNI().mul(b,c));
+
+
+}
+
+else if(a==4)
+{
+
+int b;
+  int c;
+  out.println("Enter first Number");
+  b=sc.nextInt();
+  out.println("Enter Second Number");
+  c=sc.nextInt();
+System.out.println("Division is="+new TestJNI().div(b,c));
+
+
+}
+
+
+}
+while(a!=0);
+
+
+
+
+}
+}
+TestJNI.c
+
+
+#include <jni.h>
+#include <stdio.h>
+#include "TestJNI.h"
+// Implementation of native method add() of TestJNI class
+
+JNIEXPORT jint JNICALL Java_TestJNI_add(JNIEnv *env , jobject
+thisObj , jint n1 , jint n2)
+{
+jint res;
+res=n1+n2;
+return res;
+}
+
+JNIEXPORT jint JNICALL Java_TestJNI_sub(JNIEnv *env , jobject
+thisObj , jint n1 , jint n2)
+{
+jint res;
+res=n2-n1;
+return res;
+}
+
+JNIEXPORT jint JNICALL Java_TestJNI_mul(JNIEnv *env , jobject
+thisObj , jint n1 , jint n2)
+{
+jint res;
+res=n1*n2;
+return res;
+}
+
+JNIEXPORT jint JNICALL Java_TestJNI_div(JNIEnv *env , jobject
+thisObj , jint n1 , jint n2)
+{
+jint res;
+res=n1/n2;
+return res;
+}
